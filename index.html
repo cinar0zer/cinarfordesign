@@ -7,407 +7,274 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        /* === PREMIUM COLOR PALETTE & VARIABLES === */
+        /* === PREMIUM VARIABLES === */
         :root {
-            --bg-primary: #0a0a0f; /* Deep Space Black */
-            --bg-secondary: #12121a; /* Dark Blue-Grey */
-            --text-main: #f8f9fa; /* Off-White */
-            --text-muted: #a0a0ab; /* Cool Grey */
-            --accent-primary: #6366f1; /* Indigo */
-            --accent-secondary: #00e676; /* Neon Green (Your Signature) */
-            --gradient-text: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
-            --glass-bg: rgba(18, 18, 26, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.05);
+            --bg-primary: #050505;
+            --bg-secondary: #0d0d12;
+            --text-main: #ffffff;
+            --text-muted: #888893;
+            --accent-primary: #6366f1;
+            --accent-secondary: #00e676;
+            --glass-bg: rgba(13, 13, 18, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
         }
 
-        /* === RESET & TYPOGRAPHY === */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            background-color: var(--bg-primary); 
-            color: var(--text-main); 
-            font-family: 'Inter', sans-serif; 
-            line-height: 1.6; 
-            overflow-x: hidden; 
-            scroll-behavior: smooth;
+            background-color: var(--bg-primary); color: var(--text-main); 
+            font-family: 'Inter', sans-serif; overflow-x: hidden; 
+            /* Giriş ekranı bitene kadar kaydırmayı kapatıyoruz */
+            overflow-y: hidden; 
         }
-        h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: -0.03em; }
-
-        /* === CUSTOM SELECTION === */
+        h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
         ::selection { background: var(--accent-primary); color: #fff; }
 
-        /* === ANIMATIONS === */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
+        /* === DİL SEÇİMİ GİRİŞ EKRANI (SPLASH SCREEN) === */
+        .intro-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
         }
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
-            70% { box-shadow: 0 0 0 20px rgba(99, 102, 241, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
-        }
-        @keyframes rgb-border {
-            0% { border-color: #ff0000; box-shadow: 0 0 15px rgba(255,0,0,0.2); }
-            33% { border-color: #00ff00; box-shadow: 0 0 15px rgba(0,255,0,0.2); }
-            66% { border-color: #0000ff; box-shadow: 0 0 15px rgba(0,0,255,0.2); }
-            100% { border-color: #ff0000; box-shadow: 0 0 15px rgba(255,0,0,0.2); }
-        }
-
-        /* === NAVIGATION BAR (GLASSMORPHISM) === */
-        header {
-            position: fixed;
-            top: 0; width: 100%; z-index: 1000;
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 20px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            transition: all 0.3s ease;
-        }
-        .logo {
+        .intro-overlay.hidden { transform: translateY(-100%); }
+        .intro-brand { font-family: 'Space Grotesk'; font-size: 30px; margin-bottom: 40px; color: #fff; letter-spacing: 2px; }
+        .intro-brand span { color: var(--accent-primary); }
+        .lang-options { display: flex; gap: 30px; }
+        .lang-btn {
+            background: transparent; color: var(--text-muted); border: 1px solid var(--text-muted);
+            padding: 12px 30px; border-radius: 30px; font-size: 14px; font-weight: 600; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 24px; font-weight: 700;
-            color: var(--text-main); text-decoration: none;
-            display: flex; align-items: center; gap: 10px;
         }
-        .logo span {
-            background: var(--gradient-text);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        nav { display: flex; gap: 30px; }
-        nav a {
-            color: var(--text-muted); text-decoration: none;
-            font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
-            transition: color 0.3s ease; position: relative;
-        }
-        nav a:hover { color: var(--text-main); }
-        nav a::after {
-            content: ''; position: absolute; bottom: -5px; left: 0;
-            width: 0%; height: 2px; background: var(--accent-primary);
-            transition: width 0.3s ease;
-        }
-        nav a:hover::after { width: 100%; }
+        .lang-btn:hover { border-color: #fff; color: #fff; transform: scale(1.05); }
 
-        .btn-primary {
-            background: var(--accent-primary); color: #fff;
-            padding: 10px 24px; border-radius: 30px; text-decoration: none;
-            font-weight: 600; font-size: 14px; transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        /* === SCROLL ANİMASYONLARI (INTERSECTION OBSERVER) === */
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.2s; }
+        .reveal-delay-2 { transition-delay: 0.4s; }
+
+        /* === RGB ANİMASYONU === */
+        @keyframes rgb-border {
+            0% { border-color: #ff0000; box-shadow: 0 0 20px rgba(255,0,0,0.3); }
+            33% { border-color: #00ff00; box-shadow: 0 0 20px rgba(0,255,0,0.3); }
+            66% { border-color: #0000ff; box-shadow: 0 0 20px rgba(0,0,255,0.3); }
+            100% { border-color: #ff0000; box-shadow: 0 0 20px rgba(255,0,0,0.3); }
         }
 
-        /* === HERO SECTION === */
+        /* === HAREKETLİ ARKA PLAN (HERO) === */
         .hero {
-            min-height: 100vh;
-            display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
             padding: 100px 5% 50px; position: relative; overflow: hidden;
-            background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.1) 0%, var(--bg-primary) 70%);
+            /* Dinamik Renk Geçişi */
+            background: linear-gradient(45deg, #050505, #110f1c, #0d1b2a, #050505);
+            background-size: 400% 400%; animation: gradientBG 15s ease infinite;
         }
-        /* Abstract Background Elements */
-        .blob {
-            position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5; z-index: 0;
+        @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
+        
+        /* Dijital Izgara (Grid) Efekti */
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px; z-index: 1; pointer-events: none;
         }
-        .blob-1 { width: 400px; height: 400px; background: #6366f1; top: -100px; left: -100px; animation: float 10s ease-in-out infinite; }
-        .blob-2 { width: 300px; height: 300px; background: #ec4899; bottom: -50px; right: -50px; animation: float 8s ease-in-out infinite reverse; }
+        
+        .hero-content { text-align: center; max-width: 900px; z-index: 2; position: relative; }
+        .hero-badge { display: inline-block; padding: 8px 16px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); font-size: 12px; color: var(--accent-secondary); margin-bottom: 30px; letter-spacing: 2px; }
+        .hero h1 { font-size: clamp(40px, 8vw, 85px); line-height: 1.05; margin-bottom: 24px; }
+        .hero h1 span { color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.4); }
+        .hero p { font-size: clamp(16px, 2vw, 20px); color: var(--text-muted); margin: 0 auto 40px; max-width: 600px; }
 
-        .hero-content {
-            text-align: center; max-width: 900px; z-index: 1; position: relative;
+        /* === NAVİGASYON === */
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border); padding: 20px 5%;
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .hero-badge {
-            display: inline-block; padding: 8px 16px; border-radius: 20px;
-            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-            font-size: 12px; font-weight: 600; color: var(--accent-secondary);
-            margin-bottom: 30px; letter-spacing: 2px; text-transform: uppercase;
-        }
-        .hero h1 {
-            font-size: clamp(40px, 8vw, 80px); line-height: 1.1; margin-bottom: 24px;
-        }
-        .hero h1 span { display: block; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.3); }
-        .hero p {
-            font-size: clamp(16px, 2vw, 20px); color: var(--text-muted);
-            margin-bottom: 40px; max-width: 600px; margin-inline: auto; font-weight: 300;
-        }
-        .scroll-down {
-            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-            color: var(--text-muted); font-size: 24px; animation: float 2s ease-in-out infinite;
-        }
+        .logo { font-family: 'Space Grotesk'; font-size: 22px; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 700; }
+        nav { display: flex; gap: 30px; }
+        nav a { color: var(--text-muted); text-decoration: none; font-size: 13px; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; transition: 0.3s; }
+        nav a:hover { color: #fff; }
+        .btn-primary { background: #fff; color: #000; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 13px; transition: 0.3s; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,255,255,0.2); }
 
-        /* === SERVICES SECTION === */
-        .services { padding: 120px 5%; background: var(--bg-secondary); }
+        /* === DİĞER BÖLÜMLER (SERVICES, PORTFOLIO, ABOUT) === */
+        .section-padding { padding: 120px 5%; }
+        .bg-darker { background: var(--bg-secondary); }
         .section-header { text-align: center; margin-bottom: 80px; }
-        .section-header h2 { font-size: 40px; margin-bottom: 15px; }
+        .section-header h2 { font-size: 45px; margin-bottom: 15px; }
         .section-header p { color: var(--text-muted); font-size: 18px; max-width: 500px; margin: 0 auto; }
 
-        .services-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto;
-        }
-        .service-card {
-            background: var(--bg-primary); border: 1px solid var(--glass-border); border-radius: 20px;
-            padding: 40px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative; overflow: hidden;
-        }
-        .service-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, transparent 100%);
-            opacity: 0; transition: opacity 0.4s ease;
-        }
-        .service-card:hover { transform: translateY(-10px); border-color: rgba(99,102,241,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-        .service-card:hover::before { opacity: 1; }
-        .service-icon {
-            width: 60px; height: 60px; border-radius: 15px; background: rgba(99,102,241,0.1);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 24px; color: var(--accent-primary); margin-bottom: 25px;
-        }
-        .service-card h3 { font-size: 22px; margin-bottom: 15px; position: relative; z-index: 1; }
-        .service-card p { color: var(--text-muted); font-size: 15px; line-height: 1.7; position: relative; z-index: 1; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .service-card { background: var(--bg-primary); border: 1px solid var(--glass-border); border-radius: 20px; padding: 40px; transition: 0.4s; }
+        .service-card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.2); }
+        .service-icon { font-size: 30px; color: var(--accent-primary); margin-bottom: 25px; }
 
-        /* === PORTFOLIO SECTION (Works) === */
-        .portfolio { padding: 120px 5%; }
-        .portfolio-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto;
-        }
-        .work-card {
-            border-radius: 20px; overflow: hidden; position: relative; group; cursor: pointer;
-        }
-        .work-img-wrapper {
-            width: 100%; height: 300px; background: var(--bg-secondary); overflow: hidden; position: relative;
-        }
-        /* Fallback patterns for portfolio items instead of images */
-        .pattern-1 { background: radial-gradient(circle at 10% 20%, rgb(90, 92, 106) 0%, rgb(32, 45, 58) 81.3%); }
-        .pattern-2 { background: linear-gradient(109.6deg, rgb(20, 30, 48) 11.2%, rgb(36, 59, 85) 91.1%); }
-        
-        .work-img-wrapper img {
-            width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; filter: brightness(0.7) grayscale(0.5);
-        }
-        .work-card:hover .work-img-wrapper img { transform: scale(1.05); filter: brightness(1) grayscale(0); }
-        .work-info {
-            position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px;
-            background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, transparent 100%);
-            transform: translateY(20px); opacity: 0; transition: all 0.4s ease;
-        }
-        .work-card:hover .work-info { transform: translateY(0); opacity: 1; }
-        .work-category { color: var(--accent-primary); font-size: 12px; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; margin-bottom: 5px; display: block; }
-        .work-title { font-size: 24px; color: #fff; }
-
-        /* === ABOUT / EXPERTISE SECTION === */
-        .about { padding: 120px 5%; background: var(--bg-secondary); display: flex; align-items: center; justify-content: space-between; gap: 60px; max-width: 1200px; margin: 0 auto; }
+        .about { display: flex; align-items: center; justify-content: space-between; gap: 60px; max-width: 1200px; margin: 0 auto; }
         .about-content { flex: 1; }
-        .about-content h2 { font-size: 40px; margin-bottom: 25px; }
-        .about-content p { color: var(--text-muted); font-size: 16px; margin-bottom: 30px; }
-        .skills { display: flex; flex-direction: column; gap: 20px; }
-        .skill-item { display: flex; flex-direction: column; gap: 8px; }
-        .skill-header { display: flex; justify-content: space-between; font-size: 14px; font-weight: 500; }
-        .skill-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
-        .skill-progress { height: 100%; background: var(--gradient-text); border-radius: 10px; }
-
-        /* === CONTACT SECTION === */
-        .contact { padding: 120px 5%; text-align: center; position: relative; }
-        .contact::before {
-            content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 1px; height: 100px; background: linear-gradient(to bottom, transparent, var(--glass-border), transparent);
-        }
-        .contact h2 { font-size: 50px; margin-bottom: 20px; }
-        .contact p { color: var(--text-muted); max-width: 500px; margin: 0 auto 50px; }
+        .about-content h2 { font-size: 45px; margin-bottom: 25px; }
+        .about-content p { color: var(--text-muted); font-size: 17px; margin-bottom: 20px; line-height: 1.8; }
         
-        .contact-methods {
-            display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;
-        }
-        .contact-box {
-            padding: 40px; background: var(--bg-secondary); border: 1px solid var(--glass-border);
-            border-radius: 20px; min-width: 250px; transition: 0.3s; text-decoration: none; color: #fff;
-        }
-        .contact-box:hover { background: rgba(255,255,255,0.03); transform: translateY(-5px); }
-        .contact-box i { font-size: 32px; color: var(--accent-primary); margin-bottom: 15px; }
-        .contact-box h3 { font-size: 18px; margin-bottom: 5px; }
-        .contact-box span { color: var(--text-muted); font-size: 14px; }
-
-        /* === FOOTER WITH RGB SIGNATURE === */
-        footer {
-            padding: 40px 5%; background: var(--bg-primary); border-top: 1px solid var(--glass-border);
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
-        }
-        .footer-text { color: var(--text-muted); font-size: 14px; }
+        .contact { text-align: center; max-width: 800px; margin: 0 auto; }
+        .contact h2 { font-size: 55px; margin-bottom: 20px; }
         
-        /* THE ULTIMATE RGB INSTAGRAM LOGO */
-        .rgb-signature {
-            display: flex; align-items: center; gap: 15px; text-decoration: none;
+        /* DEV RGB INSTAGRAM KUTUSU */
+        .rgb-contact-box {
+            display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 50px 80px; background: rgba(0,0,0,0.5); border-radius: 30px; text-decoration: none; color: #fff;
+            margin-top: 40px; animation: rgb-border 4s linear infinite; border: 2px solid #fff;
+            transition: 0.3s;
         }
-        .rgb-signature span { font-family: 'Space Grotesk', sans-serif; font-size: 12px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
-        .rgb-icon-wrapper {
-            width: 60px; height: 60px; border-radius: 50%; background: #000;
-            display: flex; align-items: center; justify-content: center;
-            animation: rgb-border 4s linear infinite; border: 2px solid #fff;
-            transition: transform 0.3s ease;
-        }
-        .rgb-icon-wrapper:hover { transform: scale(1.1) rotate(5deg); }
-        .rgb-icon-wrapper i { font-size: 30px; color: #fff; }
+        .rgb-contact-box:hover { transform: scale(1.05); background: #000; }
+        .rgb-contact-box i { font-size: 60px; margin-bottom: 15px; }
+        .rgb-contact-box h3 { font-size: 24px; font-family: 'Space Grotesk'; }
 
-        /* === RESPONSIVE DESIGN === */
-        @media (max-width: 992px) {
-            .about { flex-direction: column; }
-            .hero h1 { font-size: 50px; }
-        }
+        footer { padding: 40px 5%; text-align: center; border-top: 1px solid var(--glass-border); color: var(--text-muted); font-size: 13px; margin-top: 100px; }
+
         @media (max-width: 768px) {
-            nav { display: none; } /* Mobile menu toggle needed for full implementation */
-            header { justify-content: center; }
-            .hero h1 { font-size: 40px; }
-            .portfolio-grid { grid-template-columns: 1fr; }
+            nav { display: none; }
+            .about { flex-direction: column; text-align: center; }
+            .hero h1 { font-size: 45px; }
         }
     </style>
 </head>
 <body>
 
+    <div class="intro-overlay" id="introScreen">
+        <div class="intro-brand">Çına®<span>ForDesign</span></div>
+        <div class="lang-options">
+            <button class="lang-btn" onclick="selectLang('en')">English</button>
+            <button class="lang-btn" onclick="selectLang('tr')">Türkçe</button>
+        </div>
+    </div>
+
     <header>
-        <a href="#" class="logo">
-            <i class="fas fa-layer-group" style="color: var(--accent-primary);"></i>
-            Çına®<span>ForDesign</span>
-        </a>
+        <a href="#" class="logo">Çına®ForDesign</a>
         <nav>
-            <a href="#services">Expertise</a>
-            <a href="#work">Selected Works</a>
-            <a href="#about">Studio</a>
+            <a href="#services" class="t-nav-1">Expertise</a>
+            <a href="#about" class="t-nav-2">Studio</a>
         </nav>
-        <a href="#contact" class="btn-primary">Start a Project</a>
+        <a href="#contact" class="btn-primary t-nav-btn">Start a Project</a>
     </header>
 
     <section class="hero">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        
-        <div class="hero-content">
-            <div class="hero-badge">Creative Digital Studio</div>
-            <h1>
-                Designing digital
-                <span>experiences that</span>
-                actually matter.
-            </h1>
-            <p>Elevating brands through strategic design, high-end web development, and compelling digital narratives. Based in Turkey, working globally.</p>
-            <a href="#work" class="btn-primary" style="padding: 15px 35px; font-size: 16px;">Explore Portfolio</a>
+        <div class="hero-content reveal">
+            <div class="hero-badge t-badge">Creative Digital Studio</div>
+            <h1 class="t-hero-title">Designing digital<br><span>experiences that</span><br>actually matter.</h1>
+            <p class="t-hero-desc">Elevating brands through strategic design, high-end web development, and compelling digital narratives.</p>
         </div>
-        
-        <a href="#services" class="scroll-down">
-            <i class="fas fa-arrow-down"></i>
-        </a>
     </section>
 
-    <section class="services" id="services">
-        <div class="section-header">
-            <h2>Core Expertise</h2>
-            <p>We blend aesthetics with functionality to deliver comprehensive digital solutions for modern brands.</p>
+    <section class="section-padding bg-darker" id="services">
+        <div class="section-header reveal">
+            <h2 class="t-serv-title">Core Expertise</h2>
+            <p class="t-serv-desc">Blending aesthetics with advanced functionality.</p>
         </div>
-        
         <div class="services-grid">
-            <div class="service-card">
+            <div class="service-card reveal reveal-delay-1">
                 <div class="service-icon"><i class="fas fa-code"></i></div>
-                <h3>Web Architecture</h3>
-                <p>Developing robust, scalable, and lightning-fast websites using modern frameworks. From institutional platforms like Özel İlgi Anaokulu to dynamic web applications.</p>
+                <h3 class="t-card-1-title">Web Architecture</h3>
+                <p class="t-card-1-desc">Developing robust, scalable platforms like Özel İlgi Anaokulu.</p>
             </div>
-            
-            <div class="service-card">
-                <div class="service-icon"><i class="fas fa-bezier-curve"></i></div>
-                <h3>UI/UX Design</h3>
-                <p>Crafting intuitive and engaging user interfaces that prioritize user experience without compromising on high-end visual aesthetics.</p>
-            </div>
-            
-            <div class="service-card">
+            <div class="service-card reveal reveal-delay-2">
                 <div class="service-icon"><i class="fas fa-hashtag"></i></div>
-                <h3>Digital Branding</h3>
-                <p>Establishing strong digital identities and social media strategies. Proven track record in managing organizational presence like Kirmasti Gençlik SK.</p>
+                <h3 class="t-card-2-title">Digital Branding</h3>
+                <p class="t-card-2-desc">Establishing strong digital identities like Kirmasti Gençlik SK.</p>
             </div>
         </div>
     </section>
 
-    <section class="portfolio" id="work">
-        <div class="section-header">
-            <h2>Selected Works</h2>
-            <p>A curated collection of recent projects showcasing our design philosophy and technical capabilities.</p>
-        </div>
-        
-        <div class="portfolio-grid">
-            <div class="work-card">
-                <div class="work-img-wrapper pattern-1">
-                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.1); font-size: 60px;">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                </div>
-                <div class="work-info">
-                    <span class="work-category">Web Development</span>
-                    <h3 class="work-title">Özel İlgi Institution</h3>
-                </div>
+    <section class="section-padding" id="about">
+        <div class="about reveal">
+            <div class="about-content">
+                <h2 class="t-about-title">The Architect Behind The Code</h2>
+                <p class="t-about-p1">Founded by Çınar Çağan Özer, Çına®ForDesign operates with the precision and vision of industry professionals.</p>
+                <p class="t-about-p2">Every line of code and every pixel is meticulously crafted to ensure the final product looks premium and performs flawlessly.</p>
             </div>
+        </div>
+    </section>
+
+    <section class="section-padding bg-darker" id="contact">
+        <div class="contact reveal">
+            <h2 class="t-contact-title">Let's build something extraordinary.</h2>
+            <p class="t-contact-desc">Drop a DM to discuss your vision.</p>
             
-            <div class="work-card">
-                <div class="work-img-wrapper pattern-2">
-                     <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.1); font-size: 60px;">
-                        <i class="fas fa-users"></i>
-                    </div>
-                </div>
-                <div class="work-info">
-                    <span class="work-category">Brand Identity</span>
-                    <h3 class="work-title">Kirmasti Gençlik SK</h3>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="about" id="about">
-        <div class="about-content">
-            <h2>The Architect Behind The Code</h2>
-            <p>Founded by Çınar Çağan Özer, Çına®ForDesign is built on the premise that exceptional design is a synthesis of art and logic. Despite being at the beginning of the academic journey, the studio operates with the precision and vision of seasoned industry professionals.</p>
-            <p>Every line of code and every pixel is meticulously crafted to ensure the final product not only looks premium but performs flawlessly across all devices.</p>
-        </div>
-        
-        <div class="skills" style="flex: 1; width: 100%;">
-            <div class="skill-item">
-                <div class="skill-header"><span>Frontend Development (HTML/CSS/JS)</span> <span>95%</span></div>
-                <div class="skill-bar"><div class="skill-progress" style="width: 95%;"></div></div>
-            </div>
-            <div class="skill-item">
-                <div class="skill-header"><span>UI/UX & Interface Design</span> <span>88%</span></div>
-                <div class="skill-bar"><div class="skill-progress" style="width: 88%;"></div></div>
-            </div>
-            <div class="skill-item">
-                <div class="skill-header"><span>Brand Strategy & Social Media</span> <span>92%</span></div>
-                <div class="skill-bar"><div class="skill-progress" style="width: 92%;"></div></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="contact" id="contact">
-        <h2>Let's build something extraordinary.</h2>
-        <p>Currently accepting new projects for Q3 2026. Reach out to discuss your vision, requirements, and how we can bring it to life.</p>
-        
-        <div class="contact-methods">
-            <a href="mailto:hello@cinarfordesign.com" class="contact-box">
-                <i class="far fa-envelope"></i>
-                <h3>Email</h3>
-                <span>hello@cinarfordesign.com</span>
-            </a>
-            
-            <a href="https://www.instagram.com/cagansozers/" target="_blank" class="contact-box">
+            <a href="https://www.instagram.com/cagansozers/" target="_blank" class="rgb-contact-box">
                 <i class="fab fa-instagram"></i>
-                <h3>Direct Message</h3>
-                <span>@cagansozers</span>
+                <h3 class="t-contact-btn">Direct Message</h3>
+                <span style="opacity: 0.6; margin-top: 5px; font-size: 14px;">@cagansozers</span>
             </a>
         </div>
     </section>
 
     <footer>
-        <div class="footer-text">
-            © 2026 Çına®ForDesign Studio. All rights reserved. <br>
-            <span style="opacity: 0.5; font-size: 12px;">Operating globally from Bursa & Manisa, TR.</span>
-        </div>
-        
-        <a href="https://www.instagram.com/cagansozers/" target="_blank" class="rgb-signature">
-            <span>Connect on Instagram</span>
-            <div class="rgb-icon-wrapper">
-                <i class="fab fa-instagram"></i>
-            </div>
-        </a>
+        © 2026 Çına®ForDesign Studio. All rights reserved.
     </footer>
 
+    <script>
+        // --- DİL SÖZLÜĞÜ (TÜRKÇE VE İNGİLİZCE) ---
+        const translations = {
+            en: {
+                '.t-nav-1': 'Expertise', '.t-nav-2': 'Studio', '.t-nav-btn': 'Start a Project',
+                '.t-badge': 'Creative Digital Studio',
+                '.t-hero-title': 'Designing digital<br><span>experiences that</span><br>actually matter.',
+                '.t-hero-desc': 'Elevating brands through strategic design, high-end web development, and compelling digital narratives.',
+                '.t-serv-title': 'Core Expertise', '.t-serv-desc': 'Blending aesthetics with advanced functionality.',
+                '.t-card-1-title': 'Web Architecture', '.t-card-1-desc': 'Developing robust, scalable platforms like Özel İlgi Anaokulu.',
+                '.t-card-2-title': 'Digital Branding', '.t-card-2-desc': 'Establishing strong digital identities like Kirmasti Gençlik SK.',
+                '.t-about-title': 'The Architect Behind The Code',
+                '.t-about-p1': 'Founded by Çınar Çağan Özer, Çına®ForDesign operates with the precision and vision of industry professionals.',
+                '.t-about-p2': 'Every line of code and every pixel is meticulously crafted to ensure the final product looks premium and performs flawlessly.',
+                '.t-contact-title': "Let's build something extraordinary.", '.t-contact-desc': 'Drop a DM to discuss your vision.', '.t-contact-btn': 'Direct Message'
+            },
+            tr: {
+                '.t-nav-1': 'Uzmanlık', '.t-nav-2': 'Stüdyo', '.t-nav-btn': 'Projeye Başla',
+                '.t-badge': 'Yaratıcı Dijital Ajans',
+                '.t-hero-title': 'Gerçekten iz bırakan<br><span>dijital deneyimler</span><br>tasarlıyoruz.',
+                '.t-hero-desc': 'Stratejik tasarım, üst düzey web geliştirme ve etkileyici dijital hikayelerle markaları yükseltiyoruz.',
+                '.t-serv-title': 'Temel Uzmanlık', '.t-serv-desc': 'Estetiği, ileri düzey işlevsellikle harmanlıyoruz.',
+                '.t-card-1-title': 'Web Mimarisi', '.t-card-1-desc': 'Özel İlgi Anaokulu gibi güçlü ve ölçeklenebilir platformlar geliştiriyoruz.',
+                '.t-card-2-title': 'Dijital Markalama', '.t-card-2-desc': 'Kirmasti Gençlik SK gibi güçlü dijital kimlikler inşa ediyoruz.',
+                '.t-about-title': 'Kodun Arkasındaki Mimar',
+                '.t-about-p1': 'Çınar Çağan Özer tarafından kurulan Çına®ForDesign, sektör profesyonellerinin vizyonu ve hassasiyetiyle çalışır.',
+                '.t-about-p2': 'Her satır kod ve her piksel, son ürünün kusursuz çalışması ve premium görünmesi için özenle işlenir.',
+                '.t-contact-title': "Sıra dışı bir şey inşa edelim.", '.t-contact-desc': 'Vizyonunu konuşmak için DM at.', '.t-contact-btn': 'DM Gönder'
+            }
+        };
+
+        // --- DİL SEÇİM FONKSİYONU ---
+        function selectLang(lang) {
+            // Metinleri değiştir
+            const dict = translations[lang];
+            for (let selector in dict) {
+                document.querySelector(selector).innerHTML = dict[selector];
+            }
+            
+            // Giriş ekranını yukarı kaydırarak sakla
+            document.getElementById('introScreen').classList.add('hidden');
+            
+            // Kaydırma kilidini aç
+            setTimeout(() => {
+                document.body.style.overflowY = 'auto';
+            }, 800);
+        }
+
+        // --- SCROLL (KAYDIRMA) ANİMASYONLARI ---
+        // Kullanıcı sayfayı aşağı kaydırdıkça elemanları görünür yapar
+        document.addEventListener("DOMContentLoaded", function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 }); // Yüzde 10'u ekrana girince çalışır
+
+            document.querySelectorAll('.reveal').forEach((el) => {
+                observer.observe(el);
+            });
+        });
+    </script>
 </body>
 </html>
