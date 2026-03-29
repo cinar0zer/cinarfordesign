@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çına®ForDesign | Siyah Beyaz Dijital Dünya</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* TEMEL RENKLER VE BEŞİKTAŞ TEMASI */
+        :root {
+            --bg-color: #0d0d0d;
+            --text-color: #ffffff;
+            --accent-color: #f5f5f5;
+            --bjk-black: #000000;
+            --bjk-white: #ffffff;
+            --design-neon: #00e676;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: var(--bg-color); color: var(--text-color); scroll-behavior: smooth; overflow-x: hidden; }
+
+        /* RGB ANİMASYONU */
+        @keyframes rgb-glow {
+            0% { text-shadow: 0 0 10px rgba(255,0,0,0.5), 0 0 20px rgba(255,0,0,0.3); color: #ff0000; }
+            33% { text-shadow: 0 0 10px rgba(0,255,0,0.5), 0 0 20px rgba(0,255,0,0.3); color: #00ff00; }
+            66% { text-shadow: 0 0 10px rgba(0,0,255,0.5), 0 0 20px rgba(0,0,0.3); color: #0000ff; }
+            100% { text-shadow: 0 0 10px rgba(255,0,0,0.5), 0 0 20px rgba(255,0,0,0.3); color: #ff0000; }
+        }
+        .rgb-accent { animation: rgb-glow 3s linear infinite; }
+
+        /* NAVİGASYON */
+        header { background: rgba(0,0,0,0.9); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index:1000; border-bottom: 2px solid var(--bjk-white); }
+        .logo-box { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-color); }
+        .logo-box h1 { font-size: 22px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        
+        nav a { text-decoration: none; color: var(--accent-color); font-weight: 500; font-size: 15px; margin-left: 20px; transition: 0.3s; }
+        nav a:hover { color: var(--bjk-white); }
+
+        /* HERO BÖLÜMÜ */
+        .hero { text-align:center; padding: 150px 20px; background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,1) 70%); position: relative; }
+        .hero h1 { font-size: 55px; margin-bottom: 15px; color: var(--bjk-white); font-weight: 900; }
+        .hero p { font-size: 20px; max-width: 800px; margin: 0 auto 40px; opacity: 0.8; }
+        .hero .bjk-phrase { position: absolute; bottom: 20px; left: 20px; font-size: 12px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 2px; }
+
+        /* PROJELER */
+        .projects-section { padding: 100px 5%; background: var(--bjk-black); border-top: 2px solid var(--bjk-white); }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .project-card { background: #1a1a1a; border: 1px solid #333; border-radius: 15px; padding: 30px; transition: 0.3s; }
+        .project-card:hover { transform: translateY(-10px); border-color: var(--bjk-white); }
+
+        /* DEV RGB LOGO */
+        .rgb-logo-large { 
+            animation: rgb-glow 3s linear infinite; 
+            font-size: 45px !important; /* DEV GİBİ YAPTIM */
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .btn { background: transparent; color: var(--bjk-white); padding: 12px 30px; border: 2px solid var(--bjk-white); border-radius: 50px; text-decoration: none; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
+        .btn:hover { background: var(--bjk-white); color: #000; }
+
+        footer { background: var(--bjk-black); color: var(--accent-color); padding: 60px 5%; text-align: center; border-top: 2px solid var(--bjk-white); }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="#" class="logo-box">
+        <i class="fas fa-flag bjk-flag"></i>
+        <h1>Çına®ForDesign</h1>
+    </a>
+    <nav>
+        <a href="#projeler">Projeler</a>
+        <a href="#iletisim">İletişim</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Siyah Beyaz<br>Dijital Dünyam 🦅</h1>
+    <p>Beşiktaş ruhunu, <b>Çına®ForDesign</b> markasının gücüyle dijital projelere yansıtıyorum. Manisa Yunusemre'den dünyaya açılan her kod bir hikaye anlatır.</p>
+    <a href="#projeler" class="btn">Yaptıklarımı Gör</a>
+    <div class="bjk-phrase">Siyah Beyaz Ölüm Yaşam</div>
+</section>
+
+<section class="projects-section" id="projeler">
+    <div class="projects-grid">
+        <div class="project-card">
+            <h3>Özel İlgi Anaokulu</h3>
+            <p>Maarif Modeli'ne uygun kurumsal web sitesi.</p>
+        </div>
+        <div class="project-card">
+            <h3>Kirmasti Gençlik SK</h3>
+            <p>Sosyal medya ve dijital marka yönetimi.</p>
+        </div>
+        <div class="project-card" style="opacity: 0.3;">
+            <h3>Yeni Proje...</h3>
+        </div>
+    </div>
+</section>
+
+<footer id="iletisim">
+    <h2>BANA ULAŞIN</h2>
+    <p>Dijital projelerin için DM atabilirsin.</p>
+    
+    <a href="https://www.instagram.com/cagansozers/" target="_blank" class="rgb-logo-large">
+        <i class="fab fa-instagram"></i>
+    </a>
+    
+    <p style="margin-top: 40px; font-size: 14px; opacity: 0.6;">© 2026 Çına®ForDesign | Siyah Beyaz Dijital Vizyon.</p>
+</footer>
+
+</body>
+</html>
